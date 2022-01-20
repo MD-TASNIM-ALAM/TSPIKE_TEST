@@ -1,0 +1,8 @@
+  <h4 class="modal-title ml-3 mt-3">{{ title }}</h4>
+  <div class="modal-body ml-1">
+    {{ message }}
+  </div>
+  <div class="float-right">
+    <button type="button" class="btn btn-secondary mr-1 mb-1" (click)="decline()">{{ btnCancelText }}</button>
+    <button type="button" class="btn btn-primary mb-1 mr-1" (click)="accept()">{{ btnOkText }}</button>
+  </div>

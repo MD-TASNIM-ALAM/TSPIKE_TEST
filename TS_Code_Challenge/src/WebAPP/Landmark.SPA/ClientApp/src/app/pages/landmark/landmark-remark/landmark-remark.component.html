@@ -1,0 +1,131 @@
+<div class="container-fluid">
+    <h3>Landmark Remark</h3>
+    <div class="row mt-1">
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 style='padding-bottom: 5px'>Search Locations</h5>
+                              <div class="row justify-content-center">
+                                    <div class="col">
+                                      <input #searchBox (input)="search(searchBox.value)" class="form-control form-control-borderless" type="search" placeholder="Search by remark or username">
+                                    </div>
+                              </div>
+                              <ul class="list-group list-group-flush mt-3">
+                                <li *ngFor="let marker of searchedMarkers" (click)="chooseMarker(marker)"  class="list-group-item" style="cursor: pointer">
+                                  <b>{{marker.remark}}</b> by user <i>{{marker.userName}}</i>
+                                </li>
+                              </ul>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+            <div class="card">
+                <div class="card-body">
+                  <div class="card-header">
+                    <h5>Icon meaning</h5>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-3" style="text-align: center">
+                          <img src="assets/images/current-position-icon.png" alt="Current position" height="35" width="35">
+                        </div>
+                        <div class="col">
+                          Current position
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-3" style="text-align: center">
+                          <img src="assets/images/self-marker-icon.png" alt="My notes" height="35" width="30">
+                        </div>
+                        <div class="col">
+                          Personal notes given by current user
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-3" style="text-align: center">
+                          <img src="assets/images/user-marker-icon.png" alt="Other notes" height="35" width="25">
+                        </div>
+                        <div class="col">
+                          Other notes given by other users
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+        </div> <!-- end col-->
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-body">
+                    <ng-container>
+                        <div class="position-relative col-md-12">
+                            <agm-map [latitude]="lat" [longitude]="lng">
+                                <agm-marker 
+                                    [latitude]="lat"
+                                    [longitude]="lng"
+                                    [iconUrl]="{'url': 'assets/images/current-position-icon.png', 'scaledSize': {'height': 50, 'width': 40}}"
+                                    [zIndex]="currentMarkerExists ? 10 : 1000">
+                                    <agm-info-window *ngIf="!currentMarkerExists">
+                                         <form [formGroup] = "remarkForm" (ngSubmit) = "onClickSubmit(remarkForm.value)" >
+                                              <div class="form-group">
+                                                <label>Note</label>
+                                                <textarea type="text" [readonly]="!isAddBtnVisible" formControlName="note" class="form-control"
+                                                [ngClass]="{'is-invalid': form.note.invalid && submitted }">
+                                                </textarea>
+                                                <div *ngIf="form.note.errors" class="invalid-feedback">
+                                                  <span *ngIf="form.note.errors.required">Text required!.</span>
+                                                </div>
+                                              </div>
+                                              <button *ngIf="isAddBtnVisible" type="submit" class="btn btn-primary" >Submit</button>
+                                        </form>
+                                      </agm-info-window>
+                                </agm-marker>
+                                <agm-marker
+                                    *ngFor="let landmarker of landmarkers"
+                                    (markerClick)="landmarker.isOpen ? landmarker.isOpen = false : openSingleMarker(landmarker)"
+                                    [latitude]="landmarker.latitude"
+                                    [longitude]="landmarker.longitude"
+                                    [iconUrl]="landmarker.userName === user.displayName ? {'url': 'assets/images/self-marker-icon.png', 'scaledSize': {'height': 35, 'width': 30}} : {'url': 'assets/images/user-marker-icon.png', 'scaledSize': {'height': 65, 'width': 25}}"
+                                    [zIndex]="landmarker.current ? 100 : 1">
+                                    <agm-info-window *ngIf="landmarker.userName === user.displayName" [isOpen]="landmarker.isOpen" (infoWindowClose)="landmarker.isOpen = false">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="card-header">
+                                                Location coordinates
+                                            </div>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">User: {{landmarker.userName}}</li>
+                                                <li class="list-group-item">Remark: {{landmarker.remark}}</li>
+                                                <li class="list-group-item">Latitude: {{landmarker.latitude | number: '.4'}}</li>
+                                                <li class="list-group-item">Longitude: {{landmarker.longitude | number: '.4'}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    </agm-info-window>
+                                    <agm-info-window *ngIf="landmarker.userName !== user.displayName" [isOpen]="landmarker.isOpen" (infoWindowClose)="landmarker.isOpen = false">
+                                    <div class="card">
+                                        <div class="card-body">
+                                        <div class="card-header">
+                                            Landmark Remark
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">User: {{landmarker.userName}}</li>
+                                            <li class="list-group-item">Remark: {{landmarker.remark}}</li>
+                                            <li class="list-group-item">Latitude: {{landmarker.latitude | number: '.4'}}</li>
+                                            <li class="list-group-item">Longitude: {{landmarker.longitude | number: '.4'}}</li>
+                                        </ul>
+                                        </div>
+                                    </div>
+                                    </agm-info-window>
+                                </agm-marker>
+                            </agm-map>
+                        </div>
+                    </ng-container>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+    </div>
+</div>

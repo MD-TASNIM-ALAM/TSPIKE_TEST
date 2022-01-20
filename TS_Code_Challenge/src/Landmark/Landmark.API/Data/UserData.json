@@ -1,0 +1,41 @@
+[
+  {
+    "UserID": 1,
+    "Email": "t@gmail.com",
+    "Password": "abc123",
+    "FirstName": "MD TASNIM",
+    "LastName": "ALAM",
+    "DisplayName": "MD TASNIM ALAM",
+    "LastLogin": "2021-02-12",
+    "Phone": "0123456789",
+    "Position": "0123456789",
+    "LastUpdated": "2021-02-12",
+    "IsActive": true
+  },
+  {
+    "UserID": 2,
+    "Email": "tiger@gmail.com",
+    "Password": "abc123",
+    "FirstName": "Tiger",
+    "LastName": "Spike",
+    "DisplayName": "Tiger Spike",
+    "LastLogin": "2021-02-12",
+    "Phone": "0123456789",
+    "Position": "0123456789",
+    "LastUpdated": "2021-02-12",
+    "IsActive": true
+  },
+  {
+    "UserID": 3,
+    "Email": "a@gmail.com",
+    "Password": "abc123",
+    "FirstName": "Andrew",
+    "LastName": "Hault",
+    "DisplayName": "Andrew Hault",
+    "LastLogin": "2021-02-12",
+    "Phone": "0123456789",
+    "Position": "0123456789",
+    "LastUpdated": "2021-02-12",
+    "IsActive": true
+  }
+]
